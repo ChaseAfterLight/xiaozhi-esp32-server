@@ -1,6 +1,6 @@
 # 开发版本 - 使用本地manager-api代码构建
 
-FROM registry.aliyuncs.com/library/maven:3.9-eclipse-temurin-17 AS builder
+FROM maven:3.9-eclipse-temurin-17 AS builder
 
 WORKDIR /build
 
@@ -12,7 +12,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true
 
 # 运行阶段
-FROM registry.aliyuncs.com/library/eclipse-temurin:17-jre-slim
+FROM eclipse-temurin:17-jre-slim
 
 WORKDIR /app
 
