@@ -1,10 +1,12 @@
-# Docker安装全模块 - 自定义配置版本
+# 使用本地代码构建的Docker Compose配置
 
 version: '3'
 services:
-  # Server模块
+  # Server模块 - 使用本地代码构建
   xiaozhi-esp32-server:
-    image: ghcr.nju.edu.cn/xinnan-tech/xiaozhi-esp32-server:server_latest
+    build:
+      context: ./main/xiaozhi-server
+      dockerfile: ../../Dockerfile-server-dev
     container_name: xiaozhi-esp32-server
     depends_on:
       - xiaozhi-esp32-server-db
@@ -23,13 +25,13 @@ services:
       - TZ=Asia/Shanghai
     volumes:
       # 配置文件目录
-      - ./data:/opt/xiaozhi-esp32-server/data
-      # 模型文件挂接，很重要
-      - ./models/SenseVoiceSmall/model.pt:/opt/xiaozhi-esp32-server/models/SenseVoiceSmall/model.pt
+      - ./main/xiaozhi-server/data:/opt/xiaozhi-esp32-server/data
 
-  # manager-api和manager-web模块
+  # manager-api和manager-web模块 - 使用本地代码构建
   xiaozhi-esp32-server-web:
-    image: ghcr.nju.edu.cn/xinnan-tech/xiaozhi-esp32-server:web_latest
+    build:
+      context: ./main/manager-api
+      dockerfile: ../../Dockerfile-web-dev
     container_name: xiaozhi-esp32-server-web
     restart: always
     networks:
