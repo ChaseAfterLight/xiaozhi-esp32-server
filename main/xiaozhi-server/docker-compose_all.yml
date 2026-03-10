@@ -1,4 +1,4 @@
-# Docker安装全模块 - 自定义配置版本
+# Docker安装全模块
 
 version: '3'
 services:
@@ -44,18 +44,15 @@ services:
       - "8002:8002"
     environment:
       - TZ=Asia/Shanghai
-      # 参考 application-dev.yml 的数据库配置
       - SPRING_DATASOURCE_DRUID_URL=jdbc:mysql://xiaozhi-esp32-server-db:3306/xiaozhi_esp32_server?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true&connectTimeout=30000&socketTimeout=30000&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
-      - SPRING_DATASOURCE_DRUID_USERNAME=xiaozhi
-      - SPRING_DATASOURCE_DRUID_PASSWORD=GSXae7NzxxSsK7m7
-      # 参考 application-dev.yml 的Redis配置
+      - SPRING_DATASOURCE_DRUID_USERNAME=root
+      - SPRING_DATASOURCE_DRUID_PASSWORD=123456
       - SPRING_DATA_REDIS_HOST=xiaozhi-esp32-server-redis
-      - SPRING_DATA_REDIS_PASSWORD=May@light
+      - SPRING_DATA_REDIS_PASSWORD=
       - SPRING_DATA_REDIS_PORT=6379
     volumes:
       # 配置文件目录
       - ./uploadfile:/uploadfile
-  
   # 数据库模块
   xiaozhi-esp32-server-db:
     image: mysql:latest
@@ -74,13 +71,9 @@ services:
       - ./mysql/data:/var/lib/mysql
     environment:
       - TZ=Asia/Shanghai
-      # 参考 application-dev.yml 的数据库用户名和密码
-      - MYSQL_ROOT_PASSWORD=GSXae7NzxxSsK7m7
-      - MYSQL_USER=xiaozhi
-      - MYSQL_PASSWORD=GSXae7NzxxSsK7m7
+      - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=xiaozhi_esp32_server
       - MYSQL_INITDB_ARGS="--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
-  
   # redis模块
   xiaozhi-esp32-server-redis:
     image: redis:8.0
@@ -95,8 +88,5 @@ services:
       retries: 3
     networks:
       - default
-    # 参考 application-dev.yml 的Redis密码配置
-    command: redis-server --requirepass May@light
-
 networks:
   default:
